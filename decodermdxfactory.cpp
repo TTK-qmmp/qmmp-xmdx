@@ -88,4 +88,3 @@ QString DecoderMdxFactory::translation() const
 {
     return QString();
 }
-
