@@ -92,7 +92,7 @@ qint64 MdxHelper::totalTime() const
     return m_info->length;
 }
 
-void MdxHelper::seek(qint64)
+void MdxHelper::seek(qint64 time)
 {
 
 }
