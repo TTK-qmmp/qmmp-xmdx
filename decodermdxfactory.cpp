@@ -4,9 +4,16 @@
 
 #include <QMessageBox>
 
-bool DecoderMDXFactory::canDecode(QIODevice *) const
+bool DecoderMDXFactory::canDecode(QIODevice *input) const
 {
-    return false;
+    QFile *file = static_cast<QFile*>(input);
+    if(!file)
+    {
+        return false;
+    }
+
+    MDXHelper helper(file->fileName());
+    return helper.initialize();
 }
 
 DecoderProperties DecoderMDXFactory::properties() const
@@ -14,8 +21,9 @@ DecoderProperties DecoderMDXFactory::properties() const
     DecoderProperties properties;
     properties.name = tr("MDX Plugin");
     properties.shortName = "mdx";
-    properties.filters << "*.mdx" << "*.m";
-    properties.description = "MDX Chiptunes Audio File";
+    properties.filters << "*.mdx" << "*.m" << "*.mub" << "*.muc";
+    properties.description = "MDX Game Audio File";
+    properties.protocols << "file";
     properties.noInput = true;
     return properties;
 }
@@ -43,11 +51,8 @@ QList<TrackInfo*> DecoderMDXFactory::createPlayList(const QString &path, TrackIn
 
     if(parts & TrackInfo::MetaData)
     {
-        const QMap<Qmmp::MetaData, QString> metaData(helper.readMetaData());
-        for(auto itr = metaData.begin(); itr != metaData.end(); ++itr)
-        {
-            info->setValue(itr.key(), itr.value());
-        }
+        info->setValue(Qmmp::TITLE, helper.title());
+        info->setValue(Qmmp::ARTIST, helper.author());
     }
 
     if(parts & TrackInfo::Properties)

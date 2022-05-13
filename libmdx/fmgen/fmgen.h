@@ -8,7 +8,7 @@
 #define FM_GEN_H
 
 #include "types.h"
-#ifndef WINDOWS
+#ifndef _WIN32
 # define __stdcall
 #endif
 

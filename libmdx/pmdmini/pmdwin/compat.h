@@ -31,23 +31,23 @@ typedef long long _int64;
 # define _MAX_PATH MAX_PATH
 #endif
 
-#ifndef MAX_DRIVE
+#ifndef _MAX_DRIVE
 # define _MAX_DRIVE FILENAME_MAX
 #endif
 
-#ifndef MAX_DIR
+#ifndef _MAX_DIR
 # define _MAX_DIR FILENAME_MAX
 #endif
 
-#ifndef MAX_FNAME
+#ifndef _MAX_FNAME
 # define _MAX_FNAME FILENAME_MAX
 #endif
 
-#ifndef MAX_EXT
+#ifndef _MAX_EXT
 # define _MAX_EXT FILENAME_MAX
 #endif
 
-#ifdef WIN32
+#ifdef _WIN32
 # define PATH_DELIMIT_CHR '\\'
 # define PATH_DELIMIT_STR "\\"
 #else
@@ -55,7 +55,7 @@ typedef long long _int64;
 # define PATH_DELIMIT_STR "/"
 #endif
 
-#ifndef WIN32
+#ifndef _WIN32
 # define __declspec(x)
 # define WINAPI
 #else

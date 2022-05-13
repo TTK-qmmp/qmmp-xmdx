@@ -22,10 +22,33 @@
 #include <QMap>
 #include <QFile>
 #include <qmmp/qmmp.h>
-extern "C" {
-#include <libmdx/mdxmini/mdxmini.h>
-#include <libmdx/pmdmini/pmdmini.h>
-}
+
+/*!
+ * @author Greedysky <greedysky@163.com>
+ */
+class FileReader
+{
+public:
+    FileReader() { }
+    virtual ~FileReader() { }
+
+    virtual bool load(const QString &path) = 0;
+    virtual qint64 totalTime() const = 0;
+    virtual qint64 read(unsigned char *data, qint64 maxSize) = 0;
+
+    inline int sampleRate() const { return 44100; }
+
+    inline QString title() const { return m_title; }
+    inline QString author() const { return m_author; }
+
+protected:
+    int m_offset = 0;
+    int m_length = 0;
+    QString m_title;
+    QString m_author;
+
+};
+
 
 /*!
  * @author Greedysky <greedysky@163.com>
@@ -39,25 +62,21 @@ public:
     void deinit();
     bool initialize();
 
-    inline void seek(qint64 time) { Q_UNUSED(time); }
-    inline qint64 totalTime() const { return m_length; }
+    inline qint64 totalTime() const { return m_input->totalTime(); }
 
-    inline int bitrate() const { return m_bitrate; }
-    inline int sampleRate() const { return 44100; }
+    inline int bitrate() const { return 8; }
+    inline int sampleRate() const { return m_input->sampleRate(); }
     inline int channels() const { return 2; }
     inline int depth() const { return 16; }
 
-    qint64 read(unsigned char *data, qint64 maxSize);
-    inline const QMap<Qmmp::MetaData, QString> &readMetaData() const { return m_metaData; }
+    inline qint64 read(unsigned char *data, qint64 maxSize) { return m_input->read(data, maxSize); }
+
+    inline QString title() const { return m_input->title(); }
+    inline QString author() const { return m_input->author(); }
 
 private:
     QString m_path;
-    t_mdxmini m_input;
-    bool m_mdx_mode = false;
-    int m_pos = 0;
-    int m_bitrate = 0;
-    int m_length = 0;
-    QMap<Qmmp::MetaData, QString> m_metaData;
+    FileReader *m_input = nullptr;
 
 };
 

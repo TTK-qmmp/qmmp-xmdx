@@ -1,4 +1,4 @@
-include(../../plugins.pri)
+include($$PWD/../../plugins.pri)
 
 TARGET = $$PLUGINS_PREFIX/Input/mdx
 
@@ -9,6 +9,12 @@ HEADERS += decodermdxfactory.h \
 SOURCES += decodermdxfactory.cpp \
            decoder_mdx.cpp \
            mdxhelper.cpp \
+           libmdx/fmgen/fmgen.cpp \
+           libmdx/fmgen/opna.cpp \
+           libmdx/fmgen/opm.cpp \
+           libmdx/fmgen/psg.cpp \
+           libmdx/fmgen/file.cpp \
+           libmdx/fmgen/fmtimer.cpp \
            libmdx/mdxmini/mdxmini.c \
            libmdx/mdxmini/mdx2151.c \
            libmdx/mdxmini/mdxmml_ym2151.c \
@@ -16,7 +22,7 @@ SOURCES += decodermdxfactory.cpp \
            libmdx/mdxmini/mdxfile.c \
            libmdx/mdxmini/ym2151.c \
            libmdx/mdxmini/pdxfile.c \
-           libmdx/pmdmini/pmdmini.c \
+           libmdx/pmdmini/pmdmini.cpp \
            libmdx/pmdmini/pmdwin/pmdwin.cpp \
            libmdx/pmdmini/pmdwin/table.cpp \
            libmdx/pmdmini/pmdwin/opnaw.cpp \
@@ -24,16 +30,18 @@ SOURCES += decodermdxfactory.cpp \
            libmdx/pmdmini/pmdwin/ppsdrv.cpp \
            libmdx/pmdmini/pmdwin/ppz8l.cpp \
            libmdx/pmdmini/pmdwin/util.cpp \
-           libmdx/pmdmini/fmgen/fmgen.cpp \
-           libmdx/pmdmini/fmgen/opna.cpp \
-           libmdx/pmdmini/fmgen/opm.cpp \
-           libmdx/pmdmini/fmgen/psg.cpp \
-           libmdx/pmdmini/fmgen/file.cpp \
-           libmdx/pmdmini/fmgen/fmtimer.cpp
+           libmdx/mucom88/membuf.cpp \
+           libmdx/mucom88/adpcm.cpp \
+           libmdx/mucom88/md5.c \
+           libmdx/mucom88/cmucom.cpp \
+           libmdx/mucom88/mucomvm.cpp \
+           libmdx/mucom88/Z80/Z80.cpp \
+           libmdx/mucom88/module/mucom_module.cpp \
+           libmdx/mucom88/utils/fade.cpp \
+           libmdx/mucom88/utils/mucomtag.cpp
 
-INCLUDEPATH += $$PWD/libmdx/mdxmini \
-               $$PWD/libmdx/pmdmini \
-               $$PWD/libmdx/pmdmini/fmgen
+INCLUDEPATH += $$PWD/libmdx/fmgen \
+               $$PWD/libmdx/mucom88
 
 unix {
     target.path = $$PLUGIN_DIR/Input

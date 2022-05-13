@@ -41,7 +41,7 @@ extern NLGCTX *nlgctx;
 /* ------------------------------------------------------------------ */
 #define PATH_BUF_SIZE 1024
 
-static PDX_DATA* _get_pdx(MDX_DATA* mdx, char* mdxpath);
+static PDX_DATA* _get_pdx(MDX_DATA* mdx, const char* mdxpath);
 static int self_construct(songdata* songdata);
 static void self_destroy(songdata* songdata);
 
@@ -89,7 +89,7 @@ extern void ym2151_set_logging( int flag, songdata * );
 
 /* ------------------------------------------------------------------ */
 
-int mdx_open( t_mdxmini *data, const char *filename , char *pcmdir )
+int mdx_open( MDXMini *data, const char *filename , char *pcmdir )
 {
   data->nlg_tempo = -1;
 
@@ -192,7 +192,7 @@ int mdx_open( t_mdxmini *data, const char *filename , char *pcmdir )
 	return 0;
 }
 
-void mdx_set_dir ( t_mdxmini *data , char  * dir )
+void mdx_set_dir ( MDXMini *data , char  * dir )
 {
 	strcpy(data->mdx->pdx_dir, dir );
 }
@@ -202,12 +202,12 @@ void mdx_set_rate( int freq )
 	dsp_speed = freq;
 }
 
-void mdx_set_max_loop(t_mdxmini *data , int loop)
+void mdx_set_max_loop(MDXMini *data , int loop)
 {
 	data->mdx->max_infinite_loops = loop;
 }
 
-void mdx_disp_info(t_mdxmini *data)
+void mdx_disp_info(MDXMini *data)
 {
     /* output Title, etc... */
 
@@ -217,7 +217,7 @@ void mdx_disp_info(t_mdxmini *data)
     }
 }
 
-int mdx_next_frame ( t_mdxmini *data )
+int mdx_next_frame ( MDXMini *data )
 {
 	if (data->self)
 	{
@@ -234,7 +234,7 @@ int mdx_next_frame ( t_mdxmini *data )
 
 
 // unit: us
-int mdx_frame_length ( t_mdxmini *data )
+int mdx_frame_length ( MDXMini *data )
 {
 	if (data->self)
 	{
@@ -243,12 +243,12 @@ int mdx_frame_length ( t_mdxmini *data )
 	return 0;
 }
 
-void mdx_make_buffer( t_mdxmini *data, short *buf , int buffer_size )
+void mdx_make_buffer( MDXMini *data, short *buf , int buffer_size )
 {
 	mdx_parse_mml_ym2151_make_samples(buf , buffer_size, data->songdata);
 }
 
-int mdx_calc_sample(t_mdxmini *data, short *buf, int buffer_size)
+int mdx_calc_sample(MDXMini *data, short *buf, int buffer_size)
 {
 	int s_pos;
 	int next,frame;
@@ -295,7 +295,7 @@ int mdx_calc_sample(t_mdxmini *data, short *buf, int buffer_size)
 	return next;
 }
 
-int mdx_calc_log(t_mdxmini *data, short *buf, int buffer_size)
+int mdx_calc_log(MDXMini *data, short *buf, int buffer_size)
 {
 	int s_pos;
 	int next,frame;
@@ -340,12 +340,12 @@ int mdx_calc_log(t_mdxmini *data, short *buf, int buffer_size)
 
 
 
-void mdx_get_title( t_mdxmini *data, char *title )
+void mdx_get_title( MDXMini *data, char *title )
 {
 	strcpy(title,data->mdx->data_title);
 }
 
-int  mdx_get_length( t_mdxmini *data )
+int  mdx_get_length( MDXMini *data )
 {
     ym2151_set_logging(0, data->songdata);
 	int len = mdx_parse_mml_ym2151_async_get_length(data->songdata);
@@ -354,12 +354,12 @@ int  mdx_get_length( t_mdxmini *data )
     return len;
 }
 
-int  mdx_get_tracks ( t_mdxmini *data )
+int  mdx_get_tracks ( MDXMini *data )
 {
 	return data->mdx->tracks;
 }
 
-void mdx_get_current_notes ( t_mdxmini *data , int *notes , int len )
+void mdx_get_current_notes ( MDXMini *data , int *notes , int len )
 {
 	int i;
 	
@@ -369,7 +369,7 @@ void mdx_get_current_notes ( t_mdxmini *data , int *notes , int len )
 	}
 }
 
-void mdx_close(t_mdxmini *data)
+void mdx_close(MDXMini *data)
 {
     /* one playing finished */
 	
@@ -382,12 +382,12 @@ void mdx_close(t_mdxmini *data)
     self_destroy(data->songdata);
 }
 
-int  mdx_get_sample_size ( t_mdxmini *data )
+int  mdx_get_sample_size ( MDXMini *data )
 {
 	return pcm8_get_sample_size(data->songdata);
 }
 
-int  mdx_get_buffer_size ( t_mdxmini *data )
+int  mdx_get_buffer_size ( MDXMini *data )
 {
 	return pcm8_get_buffer_size(data->songdata);
 }
@@ -451,7 +451,7 @@ _open_pdx(char* name)
 }
 
 static PDX_DATA*
-_get_pdx(MDX_DATA* mdx, char* mdxpath)
+_get_pdx(MDX_DATA* mdx, const char* mdxpath)
 {
   char *a = NULL;
   char buf[PATH_BUF_SIZE];
