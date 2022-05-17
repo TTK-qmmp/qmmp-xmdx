@@ -81,9 +81,9 @@ void DecoderMDXFactory::showSettings(QWidget *parent)
 
 void DecoderMDXFactory::showAbout(QWidget *parent)
 {
-    QMessageBox::about (parent, tr("About MDX Reader Plugin"),
-                        tr("Qmmp MDX Reader Plugin")+"\n"+
-                        tr("Written by: Greedysky <greedysky@163.com>"));
+    QMessageBox::about(parent, tr("About MDX Reader Plugin"),
+                       tr("Qmmp MDX Reader Plugin") + "\n" +
+                       tr("Written by: Greedysky <greedysky@163.com>"));
 }
 
 QString DecoderMDXFactory::translation() const
