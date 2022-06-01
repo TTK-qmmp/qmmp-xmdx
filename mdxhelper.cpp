@@ -9,7 +9,7 @@ extern "C" {
 
 #define INPUT_BUFFER_SIZE   1024
 
-class MDXFileReader : public FileReader
+class MDXFileReader : public AbstractReader
 {
 public:
     MDXFileReader();
@@ -77,7 +77,7 @@ qint64 MDXFileReader::read(unsigned char *data, qint64)
 }
 
 
-class PMDFileReader : public FileReader
+class PMDFileReader : public AbstractReader
 {
 public:
     PMDFileReader();
@@ -145,7 +145,7 @@ qint64 PMDFileReader::read(unsigned char *data, qint64)
 }
 
 
-class MUCFileReader : public FileReader
+class MUCFileReader : public AbstractReader
 {
 public:
     MUCFileReader();
@@ -179,13 +179,12 @@ bool MUCFileReader::load(const QString &path)
         return false;
     }
 
-    const qint64 size = file.size();
-    const QByteArray &module = file.readAll();
+    const QByteArray &buffer = file.readAll();
     file.close();
 
     m_input = new MucomModule;
     m_input->SetRate(sampleRate());
-    m_input->OpenMemory((unsigned char *)module.constData(), size, path.toLower().endsWith(".mub"));
+    m_input->OpenMemory((unsigned char *)buffer.constData(), buffer.length(), path.toLower().endsWith(".mub"));
     m_input->UseFader(true);
     m_input->Play();
 
@@ -212,16 +211,6 @@ qint64 MUCFileReader::read(unsigned char *data, qint64)
 }
 
 
-static FileReader *generateFileReader(const QString &path)
-{
-    const QString &suffix = path.toLower();
-    if(suffix.endsWith(".mdx")) return new MDXFileReader;
-    else if(suffix.endsWith(".m")) return new PMDFileReader;
-    else if(suffix.endsWith(".mub") || suffix.endsWith(".muc")) return new MUCFileReader;
-    else return nullptr;
-}
-
-
 MDXHelper::MDXHelper(const QString &path)
     : m_path(path)
 {
@@ -240,7 +229,11 @@ void MDXHelper::deinit()
 
 bool MDXHelper::initialize()
 {
-    m_input = generateFileReader(m_path);
+    const QString &suffix = m_path.toLower();
+    if(suffix.endsWith(".mdx")) m_input = new MDXFileReader;
+    else if(suffix.endsWith(".m")) m_input = new PMDFileReader;
+    else if(suffix.endsWith(".mub") || suffix.endsWith(".muc")) m_input = new MUCFileReader;
+
     if(!m_input)
     {
         qWarning("MDXHelper: load file suffix error");
