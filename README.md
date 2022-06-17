@@ -1,5 +1,5 @@
 This is a plugin for Qmmp (1.4.0 or greater) which supports MDX file.
-(MDXMINI and PMDMINI and MUCOM88 Audio File)
+(MDXMINI and PMDMINI and PDXMINI and VGS and MUCOM88 Audio File)
 
 The following packages are required, including development headers,
 which some vendors split into separate packages:
