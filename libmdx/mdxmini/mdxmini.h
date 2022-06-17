@@ -36,7 +36,6 @@ int  mdx_next_frame(MDXMini* data);
 int  mdx_frame_length(MDXMini* data);
 void mdx_make_buffer(MDXMini* data, short* buf, int buffer_size);
 int  mdx_calc_sample(MDXMini* data, short* buf, int buffer_size);
-int  mdx_calc_log(MDXMini* data, short* buf, int buffer_size);
 
 void mdx_get_title(MDXMini* data, char* title);
 int  mdx_get_length(MDXMini* data);

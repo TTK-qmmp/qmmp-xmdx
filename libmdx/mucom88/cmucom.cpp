@@ -119,7 +119,7 @@ int CMucom::strpick_spc(char* target, char* dest, int strmax)
       len++;
       continue;
     }
-    
+
     while (mulchr > 0)
     {
       *dst++ = *p++;
@@ -400,7 +400,6 @@ int CMucom::Play(int num, bool start)
   char* data;
   char* pcmdata;
   int   datasize;
-  int   pcmsize;
 
   if ((num < 0) || (num >= MUCOM_MUSICBUFFER_MAX))
     return -1;
@@ -436,6 +435,7 @@ int CMucom::Play(int num, bool start)
     }
     if (skippcm==0)
     {
+      int pcmsize;
       // 埋め込みPCMを読み込む
       pcmdata = MUBGetPCMData(hedmusic, pcmsize);
       vm->LoadPcmFromMem(pcmdata, pcmsize);
@@ -1136,8 +1136,7 @@ void CMucom::EditorSetFileName(const char* filename, const char* pathname, bool 
     edit_pathname = std::string(pathname);
   if (sessionstart)
   {
-    int res;
-    res = ProcessFile(filename);
+    ProcessFile(filename);
   }
 }
 

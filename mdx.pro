@@ -39,7 +39,11 @@ SOURCES += decodermdxfactory.cpp \
            libmdx/mucom88/Z80/Z80.cpp \
            libmdx/mucom88/module/mucom_module.cpp \
            libmdx/mucom88/utils/fade.cpp \
-           libmdx/mucom88/utils/mucomtag.cpp
+           libmdx/mucom88/utils/mucomtag.cpp \
+           libmdx/vgs/miniz.c \
+           libmdx/vgs/vgs2tone.c \
+           libmdx/vgs/vgsdec.c \
+           libmdx/vgs/vgsmml.c
 
 INCLUDEPATH += $$PWD/libmdx/fmgen \
                $$PWD/libmdx/mucom88

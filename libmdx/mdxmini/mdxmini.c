@@ -45,11 +45,6 @@ static PDX_DATA* _get_pdx(MDX_DATA* mdx, const char* mdxpath);
 static int self_construct(songdata* songdata);
 static void self_destroy(songdata* songdata);
 
-static void usage( void );
-static void display_version( void );
-
-// static char mdx_path[1024];
-
 /* ------------------------------------------------------------------ */
 // static char *command_name;
 static char *pdx_pathname;
@@ -294,51 +289,6 @@ int mdx_calc_sample(MDXMini *data, short *buf, int buffer_size)
 
 	return next;
 }
-
-int mdx_calc_log(MDXMini *data, short *buf, int buffer_size)
-{
-	int s_pos;
-	int next,frame;
-	
-	next = 1;
-	s_pos = 0;
-	
-	do
-	{
-		if (!data->samples)
-		{
-#ifdef USE_NLG
-            if (data->nlg_tempo != data->mdx->tempo)
-            {
-                data->nlg_tempo = data->mdx->tempo;
-                
-                int tempo_us = (1000 * 1024 * (256 - data->nlg_tempo)) / 4000;
-                WriteNLG_CTC(nlgctx, CMD_CTC0, 4); // 4 * 64 = 256us
-                WriteNLG_CTC(nlgctx, CMD_CTC3, (tempo_us / 256));
-                
-            }
-            WriteNLG_IRQ(nlgctx);
-#endif
-			next = mdx_next_frame(data);
-			frame = mdx_frame_length(data);
-			data->samples = (data->mdx->dsp_speed * frame)/1000000;
-		}
-        
-        int calc_len = data->samples;
-        
-		if (calc_len + s_pos >= buffer_size)
-            calc_len = buffer_size - s_pos;
-        
-        data->samples -= calc_len;
-        s_pos += calc_len;
-        
-		
-	}while(s_pos < buffer_size);
-    
-	return next;
-}
-
-
 
 void mdx_get_title( MDXMini *data, char *title )
 {
