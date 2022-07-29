@@ -19,7 +19,7 @@ struct PDXSample
 };
 
 // ADPCM conversion code adapted from MAME
-struct ADPCMDecoder
+struct PDXDecoder
 {
   int diff_lookup[49 * 16];
   uint8_t output_bits;          // output_12bits ? 12 : 10
@@ -27,7 +27,7 @@ struct ADPCMDecoder
   int32_t step;
   uint8_t signal_gain;
 
-  ADPCMDecoder(uint8_t outputBits = 16, uint8_t signalGain = 4)
+  PDXDecoder(uint8_t outputBits = 16, uint8_t signalGain = 4)
   {
     output_bits = outputBits;
     signal_gain = signalGain;
@@ -113,7 +113,7 @@ PDXMini::PDXMini()
 {
   file    = nullptr;
   samples = new PDXSample[PDX_NUM_SAMPLES];
-  offset  = 0;
+  tsize   = 0;
   bsize   = 0;
   buffer  = nullptr;
 }
@@ -148,36 +148,46 @@ bool PDXMini::open(const char* filename)
       bsize += length * 2;
     }
   }
-
-  buffer = new short[bsize];
-
-  ADPCMDecoder decoder;
-  for(int i = 0; i < PDX_NUM_SAMPLES; i++)
-  {
-    const uint32_t length = samples[i].length;
-    if(length > 0)
-    {
-      uint8_t* data = new uint8_t[length];
-      fseek(file, samples[i].offset, SEEK_SET);
-      fread(data, 1, length, file);
-      decoder.decode(data, length * 2, buffer + length * 2);
-      delete[] data;
-    }
-  }
   return true;
 }
 
 int PDXMini::render(char* data)
 {
-  if(offset > bsize)
+  if(tsize >= bsize)
   {
     return 0;
   }
 
-  const int size = sizeof(short) * 1024;
-  memcpy(data, buffer + offset, size);
-  offset += 1024;
+  decoder();
+
+  uint32_t size = bsize - tsize;
+  size = size < 1024 ? size : 1024;
+  memcpy(data, buffer + tsize, size * sizeof(short));
+  tsize += 1024;
   return size;
+}
+
+void PDXMini::decoder()
+{
+  if(buffer)
+  {
+    return;
+  }
+
+  buffer = new short[bsize];
+
+  PDXDecoder pdx;
+  for(int i = 0; i < PDX_NUM_SAMPLES; i++)
+  {
+    const uint32_t length = samples[i].length;
+    if(length > 0)
+    {
+      uint8_t data[length] = {0};
+      fseek(file, samples[i].offset, SEEK_SET);
+      fread(data, 1, length, file);
+      pdx.decode(data, length * 2, buffer + length * 2);
+    }
+  }
 }
 
 int PDXMini::length() const

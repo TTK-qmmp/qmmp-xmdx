@@ -18,12 +18,13 @@ public:
   int sampleRate() const;
 
 private:
+  void         decoder();
   unsigned int readBigUint32();
 
   FILE*      file;
   PDXSample* samples;
 
-  unsigned int offset;
+  unsigned int tsize;
   unsigned int bsize;
   short*       buffer;
 };
