@@ -18,7 +18,6 @@ SOURCES += decodermdxfactory.cpp \
            libmdx/mdxmini/mdxfile.c \
            libmdx/mdxmini/ym2151.c \
            libmdx/mdxmini/pdxfile.c \
-           libmdx/pdxmini/pdxmini.cpp \
            libmdx/pmdmini/pmdmini.cpp \
            libmdx/pmdmini/pmdwin/pmdwin.cpp \
            libmdx/pmdmini/pmdwin/table.cpp \
