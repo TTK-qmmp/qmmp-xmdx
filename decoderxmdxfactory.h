@@ -16,31 +16,28 @@
  * with this program; If not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#ifndef DECODER_MDX_H
-#define DECODER_MDX_H
+#ifndef DECODERXMDXFACTORY_H
+#define DECODERXMDXFACTORY_H
 
-#include <qmmp/decoder.h>
-
-class MDXHelper;
+#include <qmmp/decoderfactory.h>
 
 /*!
  * @author Greedysky <greedysky@163.com>
  */
-class DecoderMDX : public Decoder
+class DecoderXMDXFactory : public QObject, DecoderFactory
 {
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.qmmp.qmmp.DecoderFactoryInterface.1.0")
+    Q_INTERFACES(DecoderFactory)
 public:
-    explicit DecoderMDX(const QString &path);
-    virtual ~DecoderMDX();
-
-    // Standard Decoder API
-    virtual bool initialize() override final;
-    virtual qint64 totalTime() const override final;
-    virtual int bitrate() const override final;
-    virtual qint64 read(unsigned char *data, qint64 maxSize) override final;
-    virtual void seek(qint64 time) override final;
-
-private:
-    MDXHelper *m_helper = nullptr;
+    virtual bool canDecode(QIODevice *input) const override final;
+    virtual DecoderProperties properties() const override final;
+    virtual Decoder *create(const QString &path, QIODevice *input) override final;
+    virtual QList<TrackInfo*> createPlayList(const QString &path, TrackInfo::Parts parts, QStringList *ignoredPaths) override final;
+    virtual MetaDataModel* createMetaDataModel(const QString &path, bool readOnly) override final;
+    virtual void showSettings(QWidget *parent) override final;
+    virtual void showAbout(QWidget *parent) override final;
+    virtual QString translation() const override final;
 
 };
 

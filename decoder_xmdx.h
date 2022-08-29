@@ -16,28 +16,31 @@
  * with this program; If not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#ifndef DECODERMDXFACTORY_H
-#define DECODERMDXFACTORY_H
+#ifndef DECODER_XMDX_H
+#define DECODER_XMDX_H
 
-#include <qmmp/decoderfactory.h>
+#include <qmmp/decoder.h>
+
+class XMDXHelper;
 
 /*!
  * @author Greedysky <greedysky@163.com>
  */
-class DecoderMDXFactory : public QObject, DecoderFactory
+class DecoderXMDX : public Decoder
 {
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qmmp.qmmp.DecoderFactoryInterface.1.0")
-    Q_INTERFACES(DecoderFactory)
 public:
-    virtual bool canDecode(QIODevice *input) const override final;
-    virtual DecoderProperties properties() const override final;
-    virtual Decoder *create(const QString &path, QIODevice *input) override final;
-    virtual QList<TrackInfo*> createPlayList(const QString &path, TrackInfo::Parts parts, QStringList *ignoredPaths) override final;
-    virtual MetaDataModel* createMetaDataModel(const QString &path, bool readOnly) override final;
-    virtual void showSettings(QWidget *parent) override final;
-    virtual void showAbout(QWidget *parent) override final;
-    virtual QString translation() const override final;
+    explicit DecoderXMDX(const QString &path);
+    virtual ~DecoderXMDX();
+
+    // Standard Decoder API
+    virtual bool initialize() override final;
+    virtual qint64 totalTime() const override final;
+    virtual int bitrate() const override final;
+    virtual qint64 read(unsigned char *data, qint64 maxSize) override final;
+    virtual void seek(qint64 time) override final;
+
+private:
+    XMDXHelper *m_helper = nullptr;
 
 };
 
