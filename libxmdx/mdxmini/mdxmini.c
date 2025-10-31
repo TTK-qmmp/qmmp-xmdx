@@ -126,7 +126,6 @@ int mdx_open( MDXMini *data, const char *filename , char *pcmdir )
     return -1;
   }
     /* load mdx file */
-
     data->mdx = mdx_open_mdx( filename );
     if ( !data->mdx ) 
 		return -1;
