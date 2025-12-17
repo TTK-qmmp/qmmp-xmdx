@@ -1,5 +1,9 @@
 This is a plugin for Qmmp (1.6.0 or greater) which supports XMDX file.
-(MDXMINI and PMDMINI and PDXMINI and VGS and MUCOM88 Audio File)
+
+Based on [mdxmini](https://github.com/mistydemeo/mdxmini) (A library to play X68000 MDX chiptunes),
+[pmdmini](https://github.com/mistydemeo/pmdmini) (A library to play PC-98 PMD chiptunes),
+[VGS](https://github.com/suzukiplan/vgs-bgm-decoder) (VGS's .BGM file to PCM),
+[MUCOM88](https://github.com/BouKiCHi/foo_input_mucom) (MUCOM88 component).
 
 The following packages are required, including development headers,
 which some vendors split into separate packages:

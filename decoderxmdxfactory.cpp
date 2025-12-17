@@ -95,7 +95,11 @@ void DecoderXMDXFactory::showAbout(QWidget *parent)
 {
     QMessageBox::about(parent, tr("About XMDX Reader Plugin"),
                        tr("Qmmp XMDX Reader Plugin") + "\n" +
-                       tr("Written by: Greedysky <greedysky@163.com>"));
+                       tr("Written by: Greedysky <greedysky@163.com>") + "\n" +
+                       tr("Based on the source code from the mdxmini") + "\n" +
+                       tr("Based on the source code from the pmdmini") + "\n" +
+                       tr("Based on the source code from the VGS") + "\n" +
+                       tr("Based on the source code from the MUCOM88"));
 }
 
 QString DecoderXMDXFactory::translation() const
