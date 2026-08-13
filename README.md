@@ -1,4 +1,4 @@
-This is a plugin for Qmmp (1.6.0 or greater) which supports XMDX file.
+This is an inut plugin for Qmmp (1.6.0 or later) that supports XMDX files.
 
 Based on [mdxmini](https://github.com/mistydemeo/mdxmini) (A library to play X68000 MDX chiptunes),
 [pmdmini](https://github.com/mistydemeo/pmdmini) (A library to play PC-98 PMD chiptunes),
